@@ -1,0 +1,25 @@
+- name: Install and start Docker on Amazon Linux 2
+  hosts: web
+  become: yes
+  tasks:
+    - name: Update packages
+      yum:
+        name: "*"
+        state: latest
+
+    - name: Install Docker
+      shell: amazon-linux-extras install docker -y
+      args:
+        creates: /usr/bin/docker
+
+    - name: Start Docker
+      service:
+        name: docker
+        state: started
+        enabled: yes
+
+    - name: Add ec2-user to docker group
+      user:
+        name: ec2-user
+        groups: docker
+        append: yes

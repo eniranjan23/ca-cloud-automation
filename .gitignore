@@ -1,0 +1,14 @@
+# Terraform
+.terraform/
+*.tfstate
+.tfstate.
+.terraform.lock.hcl
+
+# Keys / secrets
+*.pem
+*.key
+terraform-key
+terraform-key.pem
+
+# Ansible
+*.retry

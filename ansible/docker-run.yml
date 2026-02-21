@@ -1,0 +1,33 @@
+- name: Run Nginx container on EC2
+  hosts: web
+  become: yes
+
+  tasks:
+    - name: Install pip (needed for docker module)
+      yum:
+        name: python3-pip
+        state: present
+
+    - name: Install Docker SDK for Python
+      pip:
+        name: docker
+
+    - name: Ensure Docker service is running
+      service:
+        name: docker
+        state: started
+        enabled: yes
+
+    - name: Pull nginx image
+      community.docker.docker_image:
+        name: nginx
+        source: pull
+
+    - name: Run nginx container on port 80
+      community.docker.docker_container:
+        name: web-nginx
+        image: nginx
+        state: started
+        restart_policy: always
+        ports:
+          - "80:80"
